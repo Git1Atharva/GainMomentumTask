@@ -1,0 +1,32 @@
+$version=Online
+$contentCatalog=agriContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=$version])[default=$contentCatalog:$version,unique=true]
+
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]            ; name                              ; target(code)[default = 'sameWindow']; linkName                      ; contentPage(uid, $contentCV); url                                       ;
+                              ;                          ; MyGainMomentumProgrammePageLink ; Gain Momentum Programme Page Link ;                         ; Gain Momentum Programme       ;                             ; /my-account/gain-momentum-programme ;
+
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]; $contentCV[unique = true]; links(uid, $contentCV)[mode = append];
+                               ; myFarmNavNode     ;                          ; MyGainMomentumProgrammePageLink  ;
+
+#Gain Momentum content page
+INSERT_UPDATE ContentPage; uid[unique = true]              ; approvalStatus(code, itemtype(code))[allownull = true]; $contentCV[unique = true]; copyToCatalogsDisabled[allownull = true]; defaultPage[default = 'true']; description[lang = en]; homepage[allownull = true]; keywords[lang = en]; label                          ; lockedBy(uid); masterTemplate($contentCV, uid)   ; name                         ; navigationNodeList($contentCV, uid); onlyOneRestrictionMustApply[allownull = true]; originalPage(catalogVersion(catalog(id), version), uid); owner(&Item)[allownull = true]; previewImage(catalogVersion(catalog(id), version), code); title[lang = en]             ;
+                         ; gainMomentumProgrammeContentPage       ; approved:CmsApprovalStatus                            ;                          ; false                                   ; true                         ;                       ; false                     ;                    ; /my-account/gain-momentum-programme-page ;                    ; MyAccountNonDashBoardPageTemplate ; Gain Momentum Programme Page ;                                    ; true                                         ;                                                        ;                               ;                                                         ; Gain Momentum Programme Page ;
+
+
+
+
+INSERT_UPDATE GainMomentumComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;GainMomentumContent
+                                   ;;GainMomentumContent;Gain Momentum Info;GainMomentumContent;<h2>Gain Momentum Programme</h2> <p>The 'Gain Momentum Programme' has been developed to add tangible value, increase efficiency, environmental performance, and profitability on farm. </p>
+
+# Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+                         ;;GainMomentumContentSlot;GainMomentumContent
+
+# ContentSlotForPages
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='gainMomentumProgrammeContentPage'];contentSlot(uid,$contentCV)[unique=true];;;
+                                ;;GainMomentumSlotForPage;Section1;;GainMomentumContentSlot
+
+
+
+
